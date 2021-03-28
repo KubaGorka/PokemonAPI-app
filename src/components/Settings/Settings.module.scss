@@ -1,0 +1,71 @@
+@import "../../styles/default";
+@mixin base {
+  .container {
+    width: clamp(200px, 90%, 20rem);
+    display: grid;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    h1 {
+      font-size: 1.5rem;
+    }
+    ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      li {
+        color: #7a7a7a;
+        &:hover {
+          color: $Color-Dark;
+          cursor: pointer;
+        }
+      }
+    }
+    .button {
+      @include buttonBase;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      font-size: 1.5rem;
+    }
+  }
+}
+.hidden {
+  display: none;
+}
+.settings {
+  @include base;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  .container {
+    background-color: #ffffff;
+  }
+}
+@media (min-width: $bp-large) {
+  .hidden {
+    @include base;
+    display: grid;
+  }
+  .settings {
+    @include base;
+    all: unset;
+  }
+  .hidden,
+  .settings {
+
+    .container {
+      ul {
+        grid-template-columns: 1fr;
+      }
+      .button {
+        display: none;
+      }
+    }
+  }
+}

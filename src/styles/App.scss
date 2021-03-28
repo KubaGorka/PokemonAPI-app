@@ -1,0 +1,57 @@
+@import "./default";
+.App {
+  @include paddings;
+  min-height: 100vh;
+  margin-top: 4rem;
+  overflow: hidden;
+}
+.content {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: rgba(255, 255, 255, 0.75);
+  .cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    min-height: 100vh;
+    a {
+      color: $Color-Dark;
+    }
+  }
+  .settingsToggle {
+    @include flexCenter;
+    position: fixed;
+    left: 0;
+    top: 6rem;
+    height: 4rem;
+    width: 2.5rem;
+    background-color: $Color-Primary;
+    transition: width 0.5s ease;
+    border-radius: 0 0.5rem 0.5rem 0;
+    &:hover {
+      width: 4rem;
+    }
+    svg {
+      color: white;
+      width: 2rem;
+    }
+  }
+}
+.load {
+  @include buttonBase;
+  width: 15rem;
+  height: 4rem;
+  margin: 3rem auto;
+  font-size: 1.5rem;
+}
+@media (min-width: $bp-large) {
+  .content {
+    grid-template-columns: minmax(10rem, 20%) 1fr;
+    .settingsToggle {
+      display: none;
+    }
+  }
+  .load{
+    grid-column: 2;
+  }
+}

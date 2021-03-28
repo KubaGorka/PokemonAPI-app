@@ -1,0 +1,66 @@
+//Colors
+$Color-Primary: #e3350d;
+$Color-Secondary: #30a7d7;
+$Color-Light: #ffffff;
+$Color-Dark: #000000;
+$Color-Grey: #7a7a7a;
+//Breakpoints
+$base-font: 16px; //1em
+$bp-small: 48em; // 768px
+$bp-medium: 64em; // 1024px
+$bp-large: 85.375em; // 1366px
+$bp-xlarge: 120em; // 1920px
+//Default styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  font-size: $base-font;
+}
+a {
+  all: unset;
+}
+//Mixins
+@mixin paddings {
+  padding: 0 4%;
+  @media (min-width: $bp-medium) {
+    padding: 0 8%;
+  }
+
+  @media (min-width: $bp-large) {
+    padding: 0 10%;
+  }
+
+  @media (min-width: $bp-xlarge) {
+    padding: 0 14%;
+  }
+}
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin buttonBase{
+  background-color: $Color-Primary;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: .5rem;
+  color: $Color-Light;
+  font-weight: 500;
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
+}
+
+@keyframes hoverAnimation {
+
+  50% {
+    transform: translateY(-0.5rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
