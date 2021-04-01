@@ -15,7 +15,7 @@ function capitalizeFirstLetter(value: string): string {
 
 function insertZeros(value: number): string{
   let l = value.toString().length
-  if(l === 3) return '#' + value.toString()
+  if(l >= 3) return '#' + value.toString()
   if(l === 2) return '#0' + value.toString()
   return '#00' + value
 }
@@ -24,7 +24,7 @@ const Card: React.FC<Props> = ({ ...props }) => {
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <img src={props.image} alt="Could not download" />
+        <img src={props.image} alt="Could not download from API" />
       </div>
       <p className={styles.id}>{insertZeros(props.id)}</p>
       <p className={styles.name}>{capitalizeFirstLetter(props.name)}</p>

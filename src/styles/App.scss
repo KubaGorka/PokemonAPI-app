@@ -9,15 +9,13 @@
   display: grid;
   grid-template-columns: 1fr;
   background-color: rgba(255, 255, 255, 0.75);
-  .cards {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
-    min-height: 100vh;
+  div{
+
     a {
       color: $Color-Dark;
     }
   }
+
   .settingsToggle {
     @include flexCenter;
     position: fixed;
@@ -51,7 +49,7 @@
       display: none;
     }
   }
-  .load{
+  .load {
     grid-column: 2;
   }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styles from "./Nav.module.scss";
 
 const Nav: React.FC = () => {
@@ -8,7 +9,7 @@ const Nav: React.FC = () => {
         <div className={styles.icon}></div>
         <p className={styles.text}>PokeAPI app</p>
       </div>
-      <p className={styles.about}>About</p>
+      <p className={styles.about}><Link to='/about'>About</Link></p>
     </div>
   );
 };
