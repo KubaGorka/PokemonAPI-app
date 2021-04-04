@@ -1,13 +1,17 @@
-@import "../../styles/default";
+@import "../../stylesAndFunctions/default";
+
 @mixin base {
   .container {
     width: clamp(200px, 90%, 20rem);
     display: grid;
     gap: 0.5rem;
-    padding: 2rem 1rem;
-    border-radius: 1rem;
+    padding: 1rem;
+    border-radius: .5rem;
     h1 {
       font-size: 1.5rem;
+    }
+    input{
+      width: 100%;
     }
     ul {
       list-style: none;
@@ -24,7 +28,7 @@
     }
     .button {
       @include buttonBase;
-      margin-top: 1rem;
+      margin: 1rem 0;
       padding: 0.5rem;
       font-size: 1.5rem;
     }
@@ -36,6 +40,7 @@
 .settings {
   @include base;
   position: fixed;
+  z-index: 88888;
   top: 0;
   left: 0;
   height: 100%;
@@ -45,6 +50,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   .container {
     background-color: #ffffff;
+    max-height: calc(100% - 8rem);
+    overflow-y: auto;
   }
 }
 @media (min-width: $bp-large) {
@@ -58,8 +65,9 @@
   }
   .hidden,
   .settings {
-
+    overflow: hidden;
     .container {
+      z-index: unset;
       ul {
         grid-template-columns: 1fr;
       }

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Switch, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 
-import "./styles/App.scss";
+import "./stylesAndFunctions/App.scss";
 import Nav from "./components/Nav/Nav";
 import Card from "./components/Card/Card";
 import Settings from "./components/Settings/Settings";
@@ -10,8 +10,9 @@ import Details from "./components/Details/Details";
 
 import background from "./assets/container_bg.png";
 import { ReactComponent as Cogs } from "./assets/cogs.svg";
-import { Loader } from "./styles/Loader";
-import { colors } from "./styles/styles";
+import { Loader } from "./stylesAndFunctions/Loader";
+import { colors } from "./stylesAndFunctions/colors";
+import { getIdFromURL, checkIfEnd, filterExcess } from "./stylesAndFunctions/functions";
 
 interface AllPokemonData {
   name: string;
@@ -29,33 +30,32 @@ const CardsDiv = styled.div<{
   size: number;
 }>`
   display: grid;
-  gap: 1rem;
+  row-gap: 1rem;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(${(props) => props.size * 3}rem, 1fr)
+    minmax(${(props) => props.size * 2.5}rem, 1fr)
   );
 `;
-
-function getIdFromURL(value: string): number {
-  let res = value.split("/");
-  return parseInt(res[res.length - 2]);
-}
 
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pokemonData, setPokemonData] = useState<AllPokemonData[] | []>([]);
   const [pokemons, setPokemons] = useState<Pokemon[] | []>([]);
   const [showSettings, setShowSettings] = useState<boolean>(false);
-  const [sizeOption, setSizeOption] = useState<number>(5);
+  const [sizeOption, setSizeOption] = useState<number>(4);
   const [sortOption, setSortOption] = useState<number>(0);
   const [typeOption, setTypeOption] = useState<number | null>(null);
-  const first = useRef(true);
+  const prevent = useRef(true);
 
   // Fetch all pokemon names and urls at load
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=1118")
       .then((res) => res.json())
-      .then((data) => setPokemonData(data.results));
+      .then((data) => {
+        setPokemonData(
+          data.results.filter(filterExcess)
+        );
+      });
   }, []);
 
   // Fetch next pokemon datailed data equal to limit
@@ -80,8 +80,7 @@ const App: React.FC = () => {
 
   // Fetch initial pokemons or on sort change
   useEffect(() => {
-    console.log("xd");
-    console.log(pokemonData);
+    //console.log(pokemonData);
     fetchLimit(pokemonData).then(() => setLoading((loading) => false));
   }, [pokemonData]);
 
@@ -108,62 +107,63 @@ const App: React.FC = () => {
     return pokemon;
   };
   //Sorting functions
-  const sortPokemonsN = useCallback(
-    (option: number): AllPokemonData[] => {
-      const res: AllPokemonData[] = pokemonData;
-      switch (option) {
-        case 0:
-          res.sort((a, b) => {
+  const sortPokemonsN = useCallback((): AllPokemonData[] => {
+    setPokemons([]);
+    const res: AllPokemonData[] = pokemonData;
+    let option = sortOption;
+    switch (option) {
+      case 0:
+        res.sort((a, b) => {
+          return getIdFromURL(a.url) - getIdFromURL(b.url);
+        });
+        break;
+      case 1:
+        res
+          .sort((a, b) => {
             return getIdFromURL(a.url) - getIdFromURL(b.url);
-          });
-          break;
-        case 1:
-          res
-            .sort((a, b) => {
-              return getIdFromURL(a.url) - getIdFromURL(b.url);
-            })
-            .reverse();
-          break;
-        case 2:
-          res.sort((a, b) => {
-            if (a.name < b.name) {
-              return -1;
-            }
-            if (a.name > b.name) {
-              return 1;
-            }
-            return 0;
-          });
-          break;
-        case 3:
-          res.sort((a, b) => {
-            if (a.name > b.name) {
-              return -1;
-            }
-            if (a.name < b.name) {
-              return 1;
-            }
-            return 0;
-          });
-          break;
+          })
+          .reverse();
+        break;
+      case 2:
+        res.sort((a, b) => {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        break;
+      case 3:
+        res.sort((a, b) => {
+          if (a.name > b.name) {
+            return -1;
+          }
+          if (a.name < b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        break;
 
-        default:
-          console.error("Something went wrong while sorting");
-      }
-      return res;
-    },
-    [pokemonData]
-  );
+      default:
+        console.error("Something went wrong while sorting");
+    }
+    return res;
+  }, [sortOption]);
 
   const sortPokemonsT = useCallback(async (): Promise<AllPokemonData[]> => {
     let res: AllPokemonData[] = [];
     if (typeOption === null) {
       let p: AllPokemonData[] = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=1118"
+        "https://pokeapi.co/api/v2/pokemon?limit=2000"
       )
         .then((res) => res.json())
         .then((data) => {
-          res = data.results;
+          res = data.results.filter((d: AllPokemonData) => {
+            return getIdFromURL(d.url) < 10000;
+          });
           return res;
         });
       return p;
@@ -180,25 +180,28 @@ const App: React.FC = () => {
 
         return res;
       });
+
     return p;
   }, [typeOption]);
 
   useEffect(() => {
-    setPokemons([]);
-    setPokemonData([...sortPokemonsN(sortOption)]);
-  }, [sortOption]);
+    setPokemonData([...sortPokemonsN()]);
+  }, [sortPokemonsN]);
 
   useEffect(() => {
-    if (first.current) {
+    if (prevent.current) {
       //prevents second fetch on init
-      first.current = false;
+      prevent.current = false;
       return;
     }
     setPokemons([]);
-    sortPokemonsT().then((data: AllPokemonData[]) => {
-      setPokemonData([...data]);
-    });
-  }, [typeOption]);
+    sortPokemonsT()
+      .then((data: AllPokemonData[]) => {
+        let res = data.filter(filterExcess)
+        setPokemonData([...res]);
+      })
+      .then(() => setSortOption(0));
+  }, [sortPokemonsT]);
 
   return (
     <div
@@ -243,6 +246,7 @@ const App: React.FC = () => {
                 }}
               />
             </div>
+            {pokemons.length === 0 ? <Loader variant={1} /> : ""}
             <CardsDiv size={sizeOption}>
               {pokemons.map((p: Pokemon, i: number) => {
                 let path: string = "/pokemon/" + p.name;
@@ -258,20 +262,24 @@ const App: React.FC = () => {
                 );
               })}
             </CardsDiv>
-            <button
-              className="load"
-              onClick={() => {
-                if (loading !== true) {
-                  setLoading(!loading);
-                  fetchLimit(pokemonData)
-                    .then((d) => setPokemons([...pokemons, ...d]))
-                    .then(() => setLoading((loading) => !loading))
-                    .catch((err) => console.log(err));
-                }
-              }}
-            >
-              {loading ? <Loader /> : "Load more"}
-            </button>
+            {checkIfEnd(pokemonData, pokemons) || pokemons.length === 0 ? (
+              console.log()
+            ) : (
+              <button
+                className="load"
+                onClick={() => {
+                  if (loading !== true) {
+                    setLoading(!loading);
+                    fetchLimit(pokemonData)
+                      .then((d) => setPokemons([...pokemons, ...d]))
+                      .then(() => setLoading((loading) => !loading))
+                      .catch((err) => console.log(err));
+                  }
+                }}
+              >
+                {loading ? <Loader variant={0} /> : "Load more"}
+              </button>
+            )}
           </div>
         </Route>
       </Switch>

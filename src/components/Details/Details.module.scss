@@ -1,0 +1,151 @@
+@import "../../stylesAndFunctions/default";
+
+.container {
+  margin: 0 auto;
+  padding-top: 5rem;
+  background-color: $Color-Light;
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+  max-width: 100rem;
+  .navigation {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    overflow: hidden;
+    a {
+      display: grid;
+      color: #000;
+      background-color: #a4a4a4;
+      width: 45%;
+      height: 3rem;
+      place-items: center end;
+      &:first-child {
+        place-items: center start;
+      }
+    }
+  }
+  .card {
+    background-color: #ffffff;
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    row-gap: 1rem;
+    max-width: 75rem;
+    margin: 1rem auto;
+
+    & > * {
+      width: calc(100% - 2rem);
+    }
+    .name {
+      font-size: 2rem;
+      text-align: center;
+    }
+    .desc {
+      font-size: 1.25rem;
+    }
+    .image {
+      @include flexCenter;
+      background-color: #e8e8e8;
+      border-radius: 1rem;
+      img {
+        max-height: 100%;
+        max-width: 100%;
+      }
+    }
+    .types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      .type {
+        display: grid;
+        place-items: center;
+        padding: 0.5rem;
+        //width: 4rem;
+        border-radius: 0.5rem;
+        width: 100%;
+      }
+    }
+    .stats,
+    .info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      column-gap: 2rem;
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+    .stats {
+      background-color: #e8e8e8;
+      row-gap: 0.5rem;
+      .stat {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+    .info {
+      background-color: $Color-Secondary;
+      row-gap: 1rem;
+      .label {
+        color: $Color-Dark;
+        font-size: 1rem;
+      }
+      p {
+        color: $Color-Light;
+        font-size: 1.25rem;
+      }
+      .entry {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        column-gap: 2rem;
+      }
+      .entries {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        &:nth-child(3) {
+          grid-column-start: 1;
+          grid-column-end: 3;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $bp-medium) {
+  .container {
+    .card {
+      grid-template-columns: 50% 50%;
+      grid-template-rows: 4rem 1fr 1fr 1fr;
+      grid-template-areas:
+        "name name"
+        "image desc"
+        "image stats"
+        "image info"
+        "types null";
+      .name {
+        grid-area: name;
+      }
+      .image {
+        grid-area: image;
+        height: 100%;
+      }
+      .types {
+        grid-area: types;
+      }
+      .desc {
+        grid-area: desc;
+      }
+      .stats {
+        grid-area: stats;
+        height: 100%;
+      }
+      .info {
+        grid-area: info;
+        height: 100%;
+      }
+    }
+  }
+}

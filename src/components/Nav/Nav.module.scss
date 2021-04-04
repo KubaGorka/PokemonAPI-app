@@ -1,7 +1,9 @@
-@import "../../styles/default";
+@import "../../stylesAndFunctions/default";
+
 
 .nav {
   position: fixed;
+  z-index: 9999999;
   top: 0;
   left: 0;
   @include paddings;
@@ -14,6 +16,10 @@
   height: 4rem;
   color: $Color-Light;
   z-index: 9999;
+  a{
+    color: #FFFFFF;
+    cursor: pointer;
+  }
   .logo {
     @include flexCenter;
     .icon {
@@ -55,9 +61,7 @@
   .about {
     font-size: 1.125rem;
     a {
-      text-decoration: none;
-      color: white;
-      cursor: pointer;
+      
       transition: color 0.25s ease;
       &:hover{
           color: #E8E8E8;

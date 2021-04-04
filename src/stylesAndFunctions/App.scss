@@ -2,21 +2,23 @@
 .App {
   @include paddings;
   min-height: 100vh;
-  margin-top: 4rem;
+  padding-bottom: 1rem;
   overflow: hidden;
 }
 .content {
+  margin-top: 4rem;
   display: grid;
   grid-template-columns: 1fr;
   background-color: rgba(255, 255, 255, 0.75);
-  div{
-
+  z-index: -2;
+  div {
     a {
       color: $Color-Dark;
     }
   }
 
   .settingsToggle {
+    z-index: 999998;
     @include flexCenter;
     position: fixed;
     left: 0;

@@ -4,6 +4,7 @@ $Color-Secondary: #30a7d7;
 $Color-Light: #ffffff;
 $Color-Dark: #000000;
 $Color-Grey: #7a7a7a;
+$Color-LightGrey: #e8e8e8;
 //Breakpoints
 $base-font: 16px; //1em
 $bp-small: 48em; // 768px
@@ -19,6 +20,16 @@ $bp-xlarge: 120em; // 1920px
 }
 body {
   font-size: $base-font;
+  @media (min-width: $bp-medium) {
+    font-size: $base-font * 1.10;
+  }
+  @media (min-width: $bp-large) {
+    font-size: $base-font * 1.2;
+  }
+
+  @media (min-width: $bp-xlarge) {
+    font-size: $base-font * 1.35;
+  }
 }
 a {
   all: unset;
@@ -43,19 +54,18 @@ a {
   justify-content: center;
   align-items: center;
 }
-@mixin buttonBase{
+@mixin buttonBase {
   background-color: $Color-Primary;
   border: none;
   outline: none;
   cursor: pointer;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   color: $Color-Light;
   font-weight: 500;
-  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.75);
 }
 
 @keyframes hoverAnimation {
-
   50% {
     transform: translateY(-0.5rem);
   }
@@ -63,4 +73,3 @@ a {
     transform: translateY(0);
   }
 }
-

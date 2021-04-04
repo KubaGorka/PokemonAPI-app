@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 import styles from "./Settings.module.scss";
-import { colors } from "../../styles/styles";
+import { colors } from "../../stylesAndFunctions/colors";
 
 const sortArr: string[] = [
   "Number (ascending)",
@@ -23,17 +23,15 @@ interface Props {
   setSizeOption(value: number): void;
   setSortOption(value: number): void;
   setTypeOption(value: number | null): void;
-  
 }
 
 const Settings: React.FC<Props> = ({ ...props }) => {
-
-
   const foo = props.toggle ? styles.settings : styles.hidden;
 
   return (
     <div className={foo} onClick={() => props.setToggle}>
       <div className={styles.container}>
+        <div>
         <h1>Size:</h1>
         <input
           type="range"
@@ -45,6 +43,8 @@ const Settings: React.FC<Props> = ({ ...props }) => {
             props.setSizeOption(parseInt(e.target.value))
           }
         ></input>
+        </div>
+        <div>
         <h1>Sort by:</h1>
         <ul>
           {sortArr.map((k: string, i: number) => {
@@ -59,33 +59,36 @@ const Settings: React.FC<Props> = ({ ...props }) => {
             );
           })}
         </ul>
-        <h1>Type:</h1>
-        <ul>
-          {
-            <li
-              style={props.typeOption === null ? optionStyle : undefined}
-              onClick={() => {
-                props.setTypeOption(null);
-              }}
-            >
-              All
-            </li>
-          }
-
-          {Object.keys(colors).map((k: string, i: number) => {
-            return (
+        </div>
+        <div>
+          <h1>Type:</h1>
+          <ul>
+            {
               <li
-                key={i}
-                style={props.typeOption === i ? optionStyle : undefined}
+                style={props.typeOption === null ? optionStyle : undefined}
                 onClick={() => {
-                  props.setTypeOption(i);
+                  props.setTypeOption(null);
                 }}
               >
-                {k}
+                All
               </li>
-            );
-          })}
-        </ul>
+            }
+
+            {Object.keys(colors).map((k: string, i: number) => {
+              return (
+                <li
+                  key={i}
+                  style={props.typeOption === i ? optionStyle : undefined}
+                  onClick={() => {
+                    props.setTypeOption(i);
+                  }}
+                >
+                  {k}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <button className={styles.button} onClick={props.setToggle}>
           Close
         </button>
