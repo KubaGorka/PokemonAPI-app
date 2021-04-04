@@ -20,15 +20,12 @@ $bp-xlarge: 120em; // 1920px
 }
 body {
   font-size: $base-font;
-  @media (min-width: $bp-medium) {
-    font-size: $base-font * 1.10;
-  }
   @media (min-width: $bp-large) {
-    font-size: $base-font * 1.2;
+    font-size: $base-font * 1.15;
   }
 
   @media (min-width: $bp-xlarge) {
-    font-size: $base-font * 1.35;
+    font-size: $base-font * 1.25;
   }
 }
 a {
