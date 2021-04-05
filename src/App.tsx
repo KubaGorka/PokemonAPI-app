@@ -40,6 +40,7 @@ const CardsDiv = styled.div<{
 const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pokemonData, setPokemonData] = useState<AllPokemonData[] | []>([]);
+  const [initialPokemonData, setInitialPokemonData] = useState<AllPokemonData[] | []>([]);
   const [pokemons, setPokemons] = useState<Pokemon[] | []>([]);
   const [showSettings, setShowSettings] = useState<boolean>(false);
   const [sizeOption, setSizeOption] = useState<number>(4);
@@ -55,6 +56,10 @@ const App: React.FC = () => {
         setPokemonData(
           data.results.filter(filterExcess)
         );
+        setInitialPokemonData(
+          data.results.filter(filterExcess)
+        );
+        
       });
   }, []);
 
@@ -214,7 +219,7 @@ const App: React.FC = () => {
       <Nav />
       <Switch>
         <Route path="/pokemon">
-          <Details />
+          <Details pd={initialPokemonData}/>
         </Route>
         <Route path="/">
           <div className="content">

@@ -5,8 +5,10 @@ import { colors } from "../../stylesAndFunctions/colors";
 import {
   capitalizeFirstLetter,
   insertZeros,
+  getIdFromURL,
 } from "../../stylesAndFunctions/functions";
 import { Loader } from "../../stylesAndFunctions/Loader";
+import { ReactComponent as Arrow } from "../../assets/arrow.svg";
 
 interface Information {
   id: number;
@@ -32,8 +34,19 @@ interface statsInt {
   stat: { name: string; url: string };
 }
 
-const Details: React.FC = () => {
+interface AllPokemonData {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  pd: AllPokemonData[];
+}
+
+const Details: React.FC<Props> = ({ ...props }) => {
   const [info, setInfo] = useState<Information>();
+  const [loading, setLoading] = useState<boolean>(false);
+
 
   const loc = useLocation().pathname.substring(9);
 
@@ -89,26 +102,54 @@ const Details: React.FC = () => {
     }
     getPokemonInfo().then((data) => {
       setInfo((i) => data);
+      setLoading((l) => false)
     });
   }, [loc]);
 
+  let prevPoke: AllPokemonData | null = null;
+  let nextPoke: AllPokemonData | null = null;
+
+  if (info !== undefined) {
+    info.id === 1
+      ? (prevPoke = props.pd[props.pd.length - 1])
+      : (prevPoke = props.pd[info.id - 2]);
+
+    info.id === getIdFromURL(props.pd[props.pd.length - 1].url)
+      ? (nextPoke = props.pd[0])
+      : (nextPoke = props.pd[info.id]);
+  }
+
   return (
     <div className={styles.container}>
-      {info === undefined ? (
+      {info === undefined || loading === true? (
         <Loader variant={1} />
       ) : (
         <>
-          <div className={styles.navigation}>
-            <Link to="/">
-              #001 XDDDDDDD
+          <div className={styles.navigation} onClick={() => setLoading(true)}>
+            <Link to={`/pokemon/${prevPoke?.name}`}>
+              <Arrow />
+              <div className={styles.name}>
+                {prevPoke !== null
+                  ? insertZeros(getIdFromURL(prevPoke.url)) +
+                    " " +
+                    capitalizeFirstLetter(prevPoke.name)
+                  : ""}
+              </div>
             </Link>
-            <Link to="/">
-              #001 XDDDDDDD
+            <Link to={`/pokemon/${nextPoke?.name}`}>
+              <div className={styles.name}>
+                {nextPoke !== null
+                  ? insertZeros(getIdFromURL(nextPoke.url)) +
+                    " " +
+                    capitalizeFirstLetter(nextPoke.name)
+                  : ""}
+              </div>
+              <Arrow />
             </Link>
           </div>
           <div className={styles.card}>
             <h1 className={styles.name}>
-              {insertZeros(info.id) + " " + capitalizeFirstLetter(info.name)}
+              {capitalizeFirstLetter(info.name) + " " + insertZeros(info.id)}
             </h1>
             <div className={styles.image}>
               <img src={info.image} alt="could not download" />
@@ -119,7 +160,7 @@ const Details: React.FC = () => {
                   backgroundColor: "#" + colors[capitalizeFirstLetter(t)],
                 } as React.CSSProperties;
                 return (
-                  <div style={temp} className={styles.type}>
+                  <div style={temp} className={styles.type} key={i}>
                     {capitalizeFirstLetter(t)}
                   </div>
                 );
@@ -129,7 +170,7 @@ const Details: React.FC = () => {
             <div className={styles.stats}>
               {info.stats.map((s: statsInt, i: number) => {
                 return (
-                  <div className={styles.stat}>
+                  <div className={styles.stat} key={i}>
                     <p>{capitalizeFirstLetter(s.stat.name)}</p>
                     <p>{s.base_stat}</p>
                   </div>
@@ -150,7 +191,7 @@ const Details: React.FC = () => {
                 <p className={styles.label}>Abilities</p>
                 <div className={styles.entry}>
                   {info.abilities.map((a: string, i: number) => {
-                    return <p>{capitalizeFirstLetter(a)}</p>;
+                    return <p key={i}>{capitalizeFirstLetter(a)}</p>;
                   })}
                 </div>
               </div>
