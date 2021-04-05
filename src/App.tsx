@@ -13,6 +13,7 @@ import { ReactComponent as Cogs } from "./assets/cogs.svg";
 import { Loader } from "./stylesAndFunctions/Loader";
 import { colors } from "./stylesAndFunctions/colors";
 import { getIdFromURL, checkIfEnd, filterExcess } from "./stylesAndFunctions/functions";
+import About from "./components/About/About";
 
 interface AllPokemonData {
   name: string;
@@ -218,6 +219,9 @@ const App: React.FC = () => {
     >
       <Nav />
       <Switch>
+        <Route path='/about'>
+          <About/>
+        </Route>
         <Route path="/pokemon">
           <Details pd={initialPokemonData}/>
         </Route>

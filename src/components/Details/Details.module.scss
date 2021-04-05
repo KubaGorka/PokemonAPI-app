@@ -69,6 +69,7 @@
       background-color: #e8e8e8;
       border-radius: 1rem;
       img {
+        padding: 1rem 0;
         max-height: 90%;
         max-width: 90%;
       }
@@ -109,11 +110,11 @@
       row-gap: 1rem;
       .label {
         color: $Color-Dark;
-        font-size: 1rem;
+        font-size: .9rem;
       }
       p {
         color: $Color-Light;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
       }
       .entry {
         display: grid;

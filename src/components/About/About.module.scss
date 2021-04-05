@@ -1,0 +1,27 @@
+@import "../../stylesAndFunctions/default";
+.container {
+  margin-top: 5rem;
+  a {
+    cursor: pointer;
+  }
+  .back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    svg {
+      height: 2rem;
+      padding-left: 0.5rem;
+      transform: rotate(180deg);
+      color: $Color-Primary;
+    }
+  }
+  .desc {
+    & > * {
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: $Color-Primary;
+    }
+  }
+}
