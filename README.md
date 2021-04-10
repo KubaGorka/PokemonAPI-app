@@ -12,4 +12,6 @@ The whole project is based on API that can be found here https://pokeapi.co/. De
 
 Each pokemon is represented by a card that can be clicked to see more detailed information. Cards can be sorted by name or number, as well as filtered by type.
 
-You can visit the site here: _coming soon_
+You can visit the site here: [LINK]
+
+[LINK]: https://pokemonapi-app.netlify.app/
