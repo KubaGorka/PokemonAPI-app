@@ -1,5 +1,3 @@
-# **_WORK IN PROGRESS_**
-
 # _PokemonAPI app_
 
 ### This project was created using **React** with TypeScript.
